@@ -1,0 +1,22 @@
+ ==================== 
+ = Password Manager = 
+ ====================
+ Created on 04/04/2012
+
+@author: vmalaga@gmail.com
+
+Password manager aims to be a simple but efective password database, but not
+a sharing password application, only for a reduced number of sysadmin or developers.
+
+My work as sysadmin, require to save a lot of passwords for installed applications
+from 100 to more of 1000. Since today i was using the tool named gallinero, from that
+Password Manager is based
+
+Now I have the challenge of migrating this application to django, plus add some functionality
+like send the required password the any email address
+
+FEATURES:
+
+ * Search for metadata
+ * Password is only viewed if you click on the password field, if not, it is hidden
+ * passwords are encripted on the database based on a base64 algorithm
