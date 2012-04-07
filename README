@@ -19,4 +19,13 @@ FEATURES:
 
  * Search for metadata
  * Password is only viewed if you click on the password field, if not, it is hidden
- * passwords are encripted on the database based on a base64 algorithm
+ * passwords are encripted on the database based on django.core.signing
+ * filters on right size django bar
+
+TODO:
+ * send emails with new window and a django template
+ * change passwords textbox to password box
+ * installation instructions
+ 
+REQUIREMENTS:
+ * Django 1.4

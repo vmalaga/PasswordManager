@@ -6,16 +6,24 @@ function cambiar(id, texto) {
 		}
 }
 
-var windowSizeArray = [ "width=200,height=200", "width=300,height=400,scrollbars=yes" ];
-$(document).ready(function(){
-	$('.newWindow').click(function (event){
-		var url = $(this).attr("href");
-		var windowName = "popUp";//$(this).attr("name");
-		var windowSize = windowSizeArray[$(this).attr("rel")];
+(function($) {
+	$(document).ready(function(){
+		var windowWidth = 400
+		var windowHeight = 300
+		var centerWidth = (window.screen.width - windowWidth) / 2;
+		var centerHeight = (window.screen.height - windowHeight) / 2;
 		
-		window.open(url, windowName, windowSize);
+		   
+		   $('.newWindow').click(function (event){
+		   	var url = $(this).attr("href");
+		   	var windowName = "popUp";//$(this).attr("name");
+		
+		window.open(url, windowName, 'resizable=0,width=' + windowWidth + 
+        ',height=' + windowHeight + 
+        ',left=' + centerWidth + 
+        ',top=' + centerHeight);
 		event.preventDefault();
  
         });
-});
-
+	});
+})(django.jQuery);

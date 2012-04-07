@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title>Envio de Correo PasswordManager</title>
+	</head>
+	<body>
+		<h1>Envio de Correo</h1>
+		<p>
+			<h2>{{ name }}</h2>
+		</p>
+		<p>
+			login: {{ login }} <br>
+			autor: {{ autor}} <br>
+			server: {{ server }} <br>
+			fromemail: {{ fromemail }} <br>
+			notes: {{ notes}} <br>
+		</p>
+		<form action="/send_email/send/" method="post">
+			destinatario: {{ form.mailto }}
+			<input type="hidden" name="name" value="{{ name }}" />
+			<input type="hidden" name="login" value="{{ login }}" />
+			<input type="hidden" name="server" value="{{ server }}" />
+			<input type="hidden" name="fromemail" value="{{ fromemail }}" />
+			<input type="hidden" name="notes" value="{{ notes }}" />
+			<input type="hidden" name="password" value="{{ password }}" />
+			<input type="submit" value="Submit" />
+		</form>
+	</body>
+</html>

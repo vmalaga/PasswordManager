@@ -1,6 +1,7 @@
 from django.contrib import admin
 from passManager.models import passDb, passEncr
 
+
 class passManagerAdmin(admin.ModelAdmin):
     class Media:
         js = ("/static/functions.js",)
@@ -8,7 +9,7 @@ class passManagerAdmin(admin.ModelAdmin):
     actions = ['export_as_json']    
     actions_on_bottom = True
     actions_on_top = False
-    list_display = ('name','login','getpass','server','uploader','date','notes','send_email_html')
+    list_display = ('name','login','getClickMe','server','uploader','date','notes','send_email_html')
     list_filter = ('login','server','uploader','date')
     #ordering = ['date']
     fieldsets = [
@@ -23,8 +24,8 @@ class passManagerAdmin(admin.ModelAdmin):
         obj.nivel = 1
         obj.save()
         
+
     def send_email_html(self, queryset):
-        # example using a javascript function send_email()
         return '<center><a href="/send_email/%s" rel="0" class="newWindow"><img src="/static/Email_icon.gif"></img></a></center>' % queryset.id
     send_email_html.short_description = 'Email'
     send_email_html.allow_tags = True
