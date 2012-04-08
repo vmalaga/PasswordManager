@@ -8,6 +8,7 @@ class passDb(models.Model):
     password = models.CharField(max_length=100)
     server = models.CharField(max_length=60)
     date = models.DateField(auto_now=True)
+    #date = models.DateField()
     uploader = models.ForeignKey(User)
     notes = models.TextField()
  

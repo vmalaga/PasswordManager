@@ -4,15 +4,34 @@ from passManager.models import passDb, passEncr
 from django.shortcuts import render_to_response
 from django import forms
 from django.contrib.auth.models import User
+from django.forms import CharField
+from django.template import RequestContext
+
 
 
 class ContactForm(forms.Form):
     mailto = forms.EmailField()
     
+class pruebaForm(forms.ModelForm):
+    mailto = forms.EmailField()
+    class Meta:
+        model = passDb
+        exclude = ('name','login','server','uploader','notes','password',)
+        
+def pruebaView(request, rowid):
+        row = passDb.objects.get(pk=int(rowid))
+        form = pruebaForm(instance=row)
+        name, login, server = (row.name, row.login, row.server)
+        print name + login + server
+        return render_to_response('pruebaview.html', {
+        'form': form,
+        })
     
+
 def thanks(request):
     html = "Su mensaje a sido enviado con exito"
     return HttpResponse(html)
+
 
 def sendEmailView(request, idrow):
     if request.method == 'POST':
@@ -59,4 +78,5 @@ def sendEmailView(request, idrow):
         'notes': notes,
         'fromemail': fromemail,
         'password': password,
-    })
+        }, 
+                                  context_instance=RequestContext(request))

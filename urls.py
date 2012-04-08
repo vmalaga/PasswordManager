@@ -10,6 +10,7 @@ urlpatterns = patterns('',
                        url(r'^send_email/(?P<idrow>\d+)/$', views.sendEmailView),
                        url(r'^send_email/(send)/$', views.sendEmailView),
                        url(r'^thanks/$', views.thanks),
+                       url(r'^pruebaview/(?P<rowid>\d+)/$', views.pruebaView),
     # Examples:
     # url(r'^$', 'PasswordManager.views.home', name='home'),
     # url(r'^PasswordManager/', include('PasswordManager.foo.urls')),

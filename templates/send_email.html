@@ -14,7 +14,7 @@
 			fromemail: {{ fromemail }} <br>
 			notes: {{ notes}} <br>
 		</p>
-		<form action="/send_email/send/" method="post">
+		<form action="/send_email/send/" method="post">{% csrf_token %}
 			destinatario: {{ form.mailto }}
 			<input type="hidden" name="name" value="{{ name }}" />
 			<input type="hidden" name="login" value="{{ login }}" />

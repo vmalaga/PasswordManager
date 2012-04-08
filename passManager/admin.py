@@ -1,5 +1,53 @@
 from django.contrib import admin
 from passManager.models import passDb, passEncr
+from django.contrib.admin import SimpleListFilter
+
+
+class loginsFilter(SimpleListFilter):
+    title = "Logins"
+    parameter_name = "logins"
+    rows = passDb.objects.all()
+    # Get all objects
+    rows = passDb.objects.all()                                                                                                                                                      
+    # Logins list                                                                                                                                                     
+    logins = []                                                                                                                                                                      
+    for row in rows:
+        logins.append(row.login)                                                                                                                                                     
+    # Duplicate clean
+    logins = set(logins)                                                                                                                                                             
+    
+    # Get tuple with login and ocurences
+    lista = {}
+    for l in set(logins):
+        filterlogins = passDb.objects.filter(login=l)                                                                                                                                      
+        numrows = len(filterlogins)
+        # View only logins with more than 1                                                                                                                                                        
+        if numrows > 1:
+            lista[str(l)] = numrows                                                                                                                                                  
+                                                                                                                                                                                 
+    # Import module for order dictionary                                                                                                                                                
+    from operator import itemgetter                                                                                                                                                  
+    #print sorted(lista.items(), key=itemgetter(1), reverse=True)                                                                                                                     
+    slist = sorted(lista.items(), key=itemgetter(1), reverse=True)                                                                                                                   
+    
+    # Generate facetes
+    facet = []                                                                                                                                                                       
+    for n in range(0 ,(len(slist))):
+        #print (slist[n][0]),(slist[n][0]+'('+str(slist[n][1]))+')'                                                                                                                   
+        facet.append(((slist[n][0]),(slist[n][0]+'('+str(slist[n][1]))+')'))
+    
+    def lookups(self, request, model_admin):
+        return (
+                self.facet
+#                ('roots', u"roots"),
+#                ('admins', u"admins"),
+                )
+        
+    def queryset(self, request, queryset):
+        for n in range(0 ,(len(self.slist))):
+            val = self.slist[n][0]
+            if self.value() == val:
+                return queryset.filter(login=val)
 
 
 class passManagerAdmin(admin.ModelAdmin):
@@ -10,7 +58,8 @@ class passManagerAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     actions_on_top = False
     list_display = ('name','login','getClickMe','server','uploader','date','notes','send_email_html')
-    list_filter = ('login','server','uploader','date')
+#    list_filter = ('login','server','uploader','date')
+    list_filter = (loginsFilter,'server','uploader','date')
     #ordering = ['date']
     fieldsets = [
                  (None,         {'fields': ['name',('login','password'),'server','notes']}),
