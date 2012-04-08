@@ -4,6 +4,10 @@ from django.contrib.admin import SimpleListFilter
 
 
 class loginsFilter(SimpleListFilter):
+    ''' Filtro para el admin basado en los
+    logins. Se hace facetado de los resultados
+    y solo muestra aquellos logins que tienen
+    mas de 1 aparicion'''
     title = "Logins"
     parameter_name = "logins"
     rows = passDb.objects.all()
@@ -54,12 +58,13 @@ class passManagerAdmin(admin.ModelAdmin):
     class Media:
         js = ("/static/functions.js",)
     
+    list_per_page = 20
     actions = ['export_as_json']    
     actions_on_bottom = True
     actions_on_top = False
     list_display = ('name','login','getClickMe','server','uploader','date','notes','send_email_html')
 #    list_filter = ('login','server','uploader','date')
-    list_filter = (loginsFilter,'server','uploader','date')
+    list_filter = (loginsFilter,'uploader','date')
     #ordering = ['date']
     fieldsets = [
                  (None,         {'fields': ['name',('login','password'),'server','notes']}),
