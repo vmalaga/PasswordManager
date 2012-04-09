@@ -25,7 +25,7 @@ def pruebaView(request, rowid):
         print name + login + server
         return render_to_response('pruebaview.html', {
         'form': form,
-        })
+        }, context_instance=RequestContext(request))
     
 
 def thanks(request):
