@@ -6,3 +6,5 @@
 *.pyo
 static/*
 passManager/sql/
+cambiarpw.py
+grouplogins.py

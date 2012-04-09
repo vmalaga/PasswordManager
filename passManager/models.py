@@ -22,7 +22,7 @@ class passDb(models.Model):
     getClickMe.allow_tags = True
     getClickMe.short_description = "Password"
     
-    def showPass(self):
+    def _get_password(self):
         if len(self.password) != 0:
             password = passEncr('decrypt', self.password)
         else:
