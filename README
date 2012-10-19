@@ -20,7 +20,7 @@ FEATURES:
  * Search for metadata
  * Password is only viewed if you click on the password field, if not, it is hidden
  * passwords are encripted on the database based on django.core.signing
- * filters on right size django bar
+ * filters on right size django bar, date, uploader and TOP LOGINS with facets for logins with at least 3 logins
 
 TODO:
  * send emails with new window and a django template
