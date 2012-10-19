@@ -6,77 +6,63 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import CharField
 from django.template import RequestContext
+from django.forms import TextInput, Textarea, PasswordInput, HiddenInput
 
-
-
-class ContactForm(forms.Form):
-    mailto = forms.EmailField()
-    
-class pruebaForm(forms.ModelForm):
-    mailto = forms.EmailField()
+class ContactPassForm(forms.ModelForm):
+    mailto = forms.EmailField(label='Destinatario')
     class Meta:
         model = passDb
-        exclude = ('name','login','server','uploader','notes','password',)
+#        exclude = ('uploader',)
+        widgets = {
+            'name': TextInput(attrs={'readonly':'readonly','size':'60'}),
+            'login': TextInput(attrs={'readonly':'readonly','size':'60'}),
+            'password': PasswordInput(render_value=True),
+            'server': TextInput(attrs={'readonly':'readonly','size':'60'}),
+            'notes': Textarea(attrs={'readonly':'readonly'}),
+            'uploader': HiddenInput(),
+            }
         
-def pruebaView(request, rowid):
-        row = passDb.objects.get(pk=int(rowid))
-        form = pruebaForm(instance=row)
-        name, login, server = (row.name, row.login, row.server)
-        print name + login + server
-        return render_to_response('pruebaview.html', {
-        'form': form,
-        }, context_instance=RequestContext(request))
-    
-
-def thanks(request):
-    html = "Su mensaje a sido enviado con exito"
-    return HttpResponse(html)
+def mailsent(request):
+    return render_to_response('mailsent.html', context_instance=RequestContext(request))
 
 
-def sendEmailView(request, idrow):
+def sendPassEmailView(request, rowid):
+    from django.core.mail import EmailMultiAlternatives
     if request.method == 'POST':
-        form = ContactForm(request.POST)
+        form = ContactPassForm(request.POST)
         if form.is_valid():
-            mailto = [form.cleaned_data['mailto'],]
-            name = request.POST['name']
-            login = request.POST['login']
-            server = request.POST['server']
-            fromemail = "passmanager@lnxnet.es"
-            notes = request.POST['notes']
-            password = request.POST['password']
-            subject = "Password - " + name
-            message = """<p><strong>name:</strong> %s<br>
-                         <p><strong>login:</strong> %s<br>
-                         <p><strong>server:</strong> %s<br>
-                         <p><strong>notes:</strong> %s<br>
-                         <p><strong>password:</strong> %s""" % (name, login, server, notes, password)
+            name = form.cleaned_data['name']
+            login = form.cleaned_data['login']
+            password = form.cleaned_data['password']
+            server = form.cleaned_data['server']
+            notes = form.cleaned_data['notes']
+            mailto = form.cleaned_data['mailto']
+            sender = 'PassManager@example.com'
             
-            from django.core.mail import EmailMessage
-            msg = EmailMessage(subject, message, fromemail, mailto)
-            msg.content_subtype = "html"
+            subject = "Django-PassManager - %s" % name
+            text_message ="""Django-PassManager
+            Nombre: %s
+            Login: %s
+            Password: %s
+            Server: %s
+            notas %s""" % (name, login, password, server, notes)
+            
+            html_message = """<h2>Django - PassManager</h2>
+            <p><strong>Nombre: </strong> %s</p>
+            <p><strong>Login: </strong> %s</p>
+            <p><strong>Password: </strong> %s</p>
+            <p><strong>Server: </strong> %s</p>
+            <p><strong>NOTAS: </strong> %s</p>""" % (name, login, password, server, notes)
+            
+            msg = EmailMultiAlternatives(subject, text_message, sender, [mailto])
+            msg.attach_alternative(html_message, "text/html")
             msg.send()
-            return HttpResponseRedirect('/thanks/')
-        else:
-            return HttpResponse(form.errors['mailto'])
+            return HttpResponseRedirect('/mailsent/')
     else:
-        row = passDb.objects.get(pk=int(idrow))
-        name = row.name
-        login = row.login
-        server = row.server
-        autor = row.uploader
-        notes = row.notes
-        fromemail = (User.objects.get(username=autor)).email
-        password = passEncr('decrypt', row.password)
+        row = passDb.objects.get(pk=int(rowid))
+        row.password = passEncr('decrypt', row.password)
+        form = ContactPassForm(instance=row)
         
-        form = ContactForm() # An unbound form
-        return render_to_response('send_email.html', {
-        'form': form,
-        'name': name,
-        'login': login,
-        'server': server,
-        'autor': autor,
-        'notes': notes,
-        'fromemail': fromemail,
-        'password': password,
-        }, 
-                                  context_instance=RequestContext(request))
+        
+    return render_to_response('send_pass.html', {'form': form} ,
+                              context_instance=RequestContext(request))

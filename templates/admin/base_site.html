@@ -1,10 +1,18 @@
 {% extends "admin/base.html" %}
 {% load i18n %}
 
-{% block title %}{{ title }} | {% trans 'Password Manager' %}{% endblock %}
+{% block title %}
+PassManager
+{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'Password Manager' %}</h1>
+<a href="{% url admin:index %}">
+  <img style="float:left; margin: -6px 4px 4px 4px"
+       src="/static/pwm_logo.png"/>
+</a>
+<h1 style="padding: 4px 0 0 70px;"
+    id="site-name">PassManager
+</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}

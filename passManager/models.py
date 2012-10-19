@@ -3,12 +3,14 @@ from django.db import models
 from passManager.functions import passEncr
 
 class passDb(models.Model):
+    class Meta:
+        verbose_name = 'Password'
+        
     name = models.CharField(max_length=100)
     login = models.CharField(max_length=50)
     password = models.CharField(max_length=100)
     server = models.CharField(max_length=60)
     date = models.DateField(auto_now=True)
-    #date = models.DateField()
     uploader = models.ForeignKey(User)
     notes = models.TextField()
  

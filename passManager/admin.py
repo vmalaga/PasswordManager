@@ -51,19 +51,19 @@ class loginsFilter(SimpleListFilter):
 
 class passManagerAdmin(admin.ModelAdmin):
     class Media:
-        js = ("/static/functions.js",)
-    
+        js = ("jquery-1.7.1.min.js", "jquery-ui-1.8.18.custom.min.js", "functions.js",)
+        css = {
+            "all": ("jquery-ui-1.8.18.custom.css",)
+        }
+        
     list_per_page = 20
     actions = ['export_as_json']    
     actions_on_bottom = True
     actions_on_top = False
     list_display = ('name','login','getClickMe','server','uploader','date','notes','send_email_html')
-#    list_filter = ('login','server','uploader','date')
     list_filter = (loginsFilter,'uploader','date')
-    #ordering = ['date']
     fieldsets = [
                  (None,         {'fields': ['name',('login','password'),'server','notes']}),
-                 #('Notas',         {'fields': ['uploader'], 'classes': ['collapse']}),
                  ]
     search_fields = ['name','login','server','notes']
         
@@ -74,8 +74,13 @@ class passManagerAdmin(admin.ModelAdmin):
         obj.save()
     
     def send_email_html(self, queryset):
-        return '<center><a href="/send_email/%s" rel="0" class="newWindow"><img src="/static/Email_icon.gif"></img></a></center>' % queryset.id
-    send_email_html.short_description = 'Email'
+        buttons = """                                                                                                                                                            
+            <div style="width:20px">                                                                                                                                             
+            <a href="/send_pass/%s" title="Enviar por Email" name="Envio de Correo" class="mailwindow"><img src="/static/mail-message-new.png"></img></a>                       
+            </div>
+        """ % (queryset.id)
+        return buttons
+    send_email_html.short_description = ''
     send_email_html.allow_tags = True
     
     def export_as_json(self, request, queryset):
