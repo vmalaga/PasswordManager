@@ -1,9 +1,7 @@
- ==================== 
- = Password Manager = 
- ====================
- Created on 04/04/2012
+==================== 
+= Password Manager = 
+====================
 
-@author: vmalaga@gmail.com
 
 Password manager aims to be a simple but efective password database, but not
 a sharing password application, only for a reduced number of sysadmin or developers.
@@ -54,7 +52,7 @@ Creating table passManager_passdb
 You just installed Django's auth system, which means you don't have any superusers defined.
 Would you like to create one now? (yes/no): yes
 Username (leave blank to use 'vmalaga'): 
-E-mail address: vmalaga@gmail.com
+E-mail address: vmalaga
 Password: 
 Password (again): 
 Superuser created successfully.
