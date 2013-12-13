@@ -22,7 +22,7 @@ TODO:
  * migration to django 1.6
  
 REQUIREMENTS:
- * Django 1.4
+ * Django 1.5
  * you have a requirements.txt file to use with python pip
 	pip install -r requirements.txt
 

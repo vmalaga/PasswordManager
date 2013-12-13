@@ -170,3 +170,11 @@ LOGGING = {
         },
     }
 }
+
+
+# This must be in the last lines of the file!!!!!!!
+# You can create a local_settings.py file for your settings customization
+try:
+    from local_settings import *
+except ImportError:
+    pass
