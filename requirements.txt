@@ -1,2 +1,4 @@
-django==1.4
+django==1.5
 MySQL-python
+South
+pytz

@@ -55,16 +55,28 @@ class passManagerAdmin(admin.ModelAdmin):
         css = {
             "all": ("jquery-ui-1.8.18.custom.css",)
         }
-        
-    list_per_page = 20
-    actions = ['export_as_json']    
+
+    ordering = ['modification_date']
+
+    list_per_page = 30
+    actions = ['export_as_json']
     actions_on_bottom = True
     actions_on_top = False
-    list_display = ('name','login','getClickMe','server','uploader','date','notes','send_email_html')
-    list_filter = (loginsFilter,'uploader','date')
+    list_display_links = ['name']
+    list_display = \
+      ('name','login','getClickMe','server','uploader','creation_date','notes','send_email_html')
+    list_editable = []
+    readonly_fields = [
+        'creation_date',
+        "uploader",
+        "deprecated"
+    ]
+
+    list_filter = (loginsFilter,'uploader','creation_date')
     fieldsets = [
-                 (None,         {'fields': ['name',('login','password'),'server','notes']}),
-                 ]
+		    (None,         {'fields': ['name',('login','password'),'server','notes']}),
+		    ]
+
     search_fields = ['name','login','server','notes']
         
     def save_model(self, request, obj, form, change):

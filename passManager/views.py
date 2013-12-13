@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.forms import CharField
 from django.template import RequestContext
 from django.forms import TextInput, Textarea, PasswordInput, HiddenInput
+from django.conf import settings
 
 class ContactPassForm(forms.ModelForm):
     mailto = forms.EmailField(label='Destinatario')
@@ -37,22 +38,23 @@ def sendPassEmailView(request, rowid):
             server = form.cleaned_data['server']
             notes = form.cleaned_data['notes']
             mailto = form.cleaned_data['mailto']
-            sender = 'PassManager@example.com'
+            sender = settings.PASS_MANAGER_EMAIL_FROM
             
-            subject = "Django-PassManager - %s" % name
+            subject = "%s - %s" % (settings.PASS_MANAGER_EMAIL_SUBJECT, name)
             text_message ="""Django-PassManager
-            Nombre: %s
+            Name: %s
             Login: %s
             Password: %s
             Server: %s
-            notas %s""" % (name, login, password, server, notes)
+            Notes: %s""" % (name, login, password, server, notes)
             
-            html_message = """<h2>Django - PassManager</h2>
-            <p><strong>Nombre: </strong> %s</p>
+            html_message = """<h2>%s</h2>
+            <p><strong>Name: </strong> %s</p>
             <p><strong>Login: </strong> %s</p>
             <p><strong>Password: </strong> %s</p>
             <p><strong>Server: </strong> %s</p>
-            <p><strong>NOTAS: </strong> %s</p>""" % (name, login, password, server, notes)
+            <p><strong>Notes: </strong> %s</p>""" \
+% (settings.PASS_MANAGER_EMAIL_TITLE, name, login, password, server, notes)
             
             msg = EmailMultiAlternatives(subject, text_message, sender, [mailto])
             msg.attach_alternative(html_message, "text/html")

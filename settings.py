@@ -31,6 +31,7 @@ DATABASES = {
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
 TIME_ZONE = 'Europe/Madrid'
+USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -126,7 +127,18 @@ INSTALLED_APPS = (
     #'django.contrib.admindocs',
     # APLICACIONES
     'passManager',
+    'south',
 )
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '127.0.0.1'
+EMAIL_PORT = 25
+
+PASS_MANAGER_EMAIL_FROM="noreply@example.com"
+PASS_MANAGER_EMAIL_SUBJECT="Credentials"
+PASS_MANAGER_EMAIL_TITLE="Credentials"
 
 INTERNAL_IPS = (
                 '127.0.0.1',
