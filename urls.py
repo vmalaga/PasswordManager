@@ -10,7 +10,6 @@ urlpatterns = patterns('',
                        url(r'^send_pass/(?P<rowid>\d+)/$', sendPassEmailView),
                        url(r'^send_pass/(send)/$', sendPassEmailView),
                        url(r'^mailsent/$', mailsent),
-                       url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^$', include(admin.site.urls)),
 )
