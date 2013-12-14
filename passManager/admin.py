@@ -3,11 +3,11 @@ from passManager.models import passDb, passEncr
 from django.contrib.admin import SimpleListFilter
 
 
-class loginsFilter(SimpleListFilter):
-    ''' Filtro para el admin basado en los
-    logins. Se hace facetado de los resultados
-    y solo muestra aquellos logins que tienen
-    mas de 1 aparicion'''
+class LoginsFilter(SimpleListFilter):
+    """ Filter based on same login name.
+    Make facer of login number with 3 or more
+    login name ocurrences
+    """
     title = "TOP Logins"
     parameter_name = "logins"
     # Get all objects
@@ -38,8 +38,6 @@ class loginsFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
         return (
                 self.facet
-#                ('roots', u"roots"),
-#                ('admins', u"admins"),
                 )
         
     def queryset(self, request, queryset):
@@ -49,22 +47,21 @@ class loginsFilter(SimpleListFilter):
                 return queryset.filter(login=val)
 
 
-class passManagerAdmin(admin.ModelAdmin):
+class PassManagerAdmin(admin.ModelAdmin):
     class Media:
         js = ("jquery-1.7.1.min.js", "jquery-ui-1.8.18.custom.min.js", "functions.js",)
         css = {
             "all": ("jquery-ui-1.8.18.custom.css",)
         }
 
-    ordering = ['modification_date']
+    ordering = ['creation_date']
 
     list_per_page = 30
     actions = ['export_as_json']
     actions_on_bottom = True
     actions_on_top = False
     list_display_links = ['name']
-    list_display = \
-      ('name','login','getClickMe','server','uploader','creation_date','notes','send_email_html')
+    list_display = ('name','login','getClickMe','server','uploader','creation_date','notes','send_email_html')
     list_editable = []
     readonly_fields = [
         'creation_date',
@@ -72,7 +69,7 @@ class passManagerAdmin(admin.ModelAdmin):
         "deprecated"
     ]
 
-    list_filter = (loginsFilter,'uploader','creation_date')
+    list_filter = (LoginsFilter,'uploader','creation_date')
     fieldsets = [
 		    (None,         {'fields': ['name',('login','password'),'server','notes']}),
 		    ]
@@ -103,4 +100,4 @@ class passManagerAdmin(admin.ModelAdmin):
         return response
 
         
-admin.site.register(passDb, passManagerAdmin)
+admin.site.register(passDb, PassManagerAdmin)
