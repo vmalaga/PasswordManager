@@ -80,7 +80,7 @@ class passManagerAdmin(admin.ModelAdmin):
     search_fields = ['name','login','server','notes']
         
     def save_model(self, request, obj, form, change):
-        obj.password = passEncr('encrypt', obj.password)
+        #obj.password = passEncr('encrypt', obj.password)
         obj.uploader = request.user
         obj.nivel = 1
         obj.save()
