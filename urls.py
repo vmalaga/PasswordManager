@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from passManager import views
 from passManager.views import sendPassEmailView, mailsent
 from django.http import HttpResponseRedirect

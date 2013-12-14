@@ -9,3 +9,4 @@ passManager/sql/
 cambiarpw.py
 grouplogins.py
 local_settings.py
+.idea

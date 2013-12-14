@@ -159,8 +159,15 @@ LOGGING = {
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler'
+	    'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+	    'include_html': True,
         }
+    },
+    'filters': {
+	    'require_debug_false': {
+		    '()': 'django.utils.log.RequireDebugFalse'
+	    }
     },
     'loggers': {
         'django.request': {
@@ -172,7 +179,6 @@ LOGGING = {
 }
 
 
-# This must be in the last lines of the file!!!!!!!
 # You can create a local_settings.py file for your settings customization
 try:
     from local_settings import *
