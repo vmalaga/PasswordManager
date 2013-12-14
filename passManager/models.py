@@ -18,7 +18,6 @@ class BaseSignedField(models.Field):
 			return value
 
 	def get_db_prep_value(self, value, connection, prepared=False):
-		print "get_db_prep_value"
 		return value if value is None else passEncr('encrypt', value)
 
 class SignedCharField(BaseSignedField):
