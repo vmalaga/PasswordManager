@@ -1,6 +1,9 @@
 from django.contrib import admin
-from passManager.models import passDb, passEncr
+from django.db import models
+from django.forms import TextInput, Textarea
 from django.contrib.admin import SimpleListFilter
+
+from passManager.models import passDb
 
 
 class LoginsFilter(SimpleListFilter):
@@ -87,14 +90,17 @@ class ServersFilter(SimpleListFilter):
             if self.value() == val:
                 return queryset.filter(server=val)
 
-
-
 class PassManagerAdmin(admin.ModelAdmin):
     class Media:
         js = ("jquery-1.7.1.min.js", "jquery-ui-1.8.18.custom.min.js", "functions.js",)
         css = {
             "all": ("jquery-ui-1.8.18.custom.css",)
         }
+
+    formfield_overrides = {
+        models.CharField: {'widget': TextInput(attrs={'size':'40'})},
+        #models.TextField: {'widget': Textarea(attrs={'rows':10, 'cols':60})},
+    }
 
     ordering = ['creation_date']
 
@@ -105,6 +111,8 @@ class PassManagerAdmin(admin.ModelAdmin):
     list_display_links = ['name']
     list_display = ('name','login','getClickMe','server','uploader','creation_date','notes','send_email_html')
     list_editable = []
+    date_hierarchy = 'creation_date'
+    save_as = True
     readonly_fields = [
         'creation_date',
         "uploader"
