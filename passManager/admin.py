@@ -46,6 +46,48 @@ class LoginsFilter(SimpleListFilter):
             if self.value() == val:
                 return queryset.filter(login=val)
 
+class ServersFilter(SimpleListFilter):
+    """ Filter based on same server name.
+    Make facet of server names number with 3 or more
+    name ocurrences
+    """
+    title = 'TOP Servers'
+    parameter_name = 'servers'
+    # Get all objects
+    rows = passDb.objects.all()
+    # Server list
+    servers = []
+    for row in rows:
+        servers.append(row.server)
+    # Duplicate clean
+    # servers = set(servers)
+
+    # Get tuple with servers and ocurences
+    lista = {}
+    for l in set(servers):
+        numrows = passDb.objects.filter(server=l).count()
+        if numrows >= 1:
+            lista[str(l)] = numrows
+
+    # Import module for order dictionary
+    from operator import itemgetter
+    slist = sorted(lista.items(), key=itemgetter(1), reverse=True)
+
+    # Generate facetes
+    facet = []
+    for n in range(0 ,(len(slist))):
+        facet.append(((slist[n][0]),(slist[n][0]+' ('+str(slist[n][1]))+')'))
+
+    def lookups(self, request, model_admin):
+        return (self.facet)
+
+    def queryset(self, request, queryset):
+        for n in range(0 ,(len(self.slist))):
+            val = self.slist[n][0]
+            if self.value() == val:
+                return queryset.filter(server=val)
+
+
 
 class PassManagerAdmin(admin.ModelAdmin):
     class Media:
@@ -65,11 +107,10 @@ class PassManagerAdmin(admin.ModelAdmin):
     list_editable = []
     readonly_fields = [
         'creation_date',
-        "uploader",
-        "deprecated"
+        "uploader"
     ]
 
-    list_filter = (LoginsFilter,'uploader','creation_date')
+    list_filter = (LoginsFilter, ServersFilter, 'uploader','creation_date')
     fieldsets = [
 		    (None,         {'fields': ['name',('login','password'),'server','notes']}),
 		    ]
