@@ -73,7 +73,7 @@ class ServersFilter(SimpleListFilter):
     from operator import itemgetter
     slist = sorted(lista.items(), key=itemgetter(1), reverse=True)
 
-    # Generate facetes
+    # Generate facets
     facet = []
     for n in range(0 ,(len(slist))):
         facet.append(((slist[n][0]),(slist[n][0]+' ('+str(slist[n][1]))+')'))

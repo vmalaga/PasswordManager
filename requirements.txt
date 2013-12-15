@@ -1,6 +1,5 @@
-django==1.5
+django
 MySQL-python
-South
 pytz
 ipython
 django-extensions
